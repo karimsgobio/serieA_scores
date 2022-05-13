@@ -10,8 +10,8 @@ class Standings extends StatefulWidget {
 class _StandingsState extends State<Standings> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return const Center(
+      child: Text('Standings\' page'),
     );
   }
 }
