@@ -38,6 +38,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   settings_ui: ^2.0.2
   url_launcher: ^6.1.2
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
