@@ -14,14 +14,14 @@ class Match {
     return Match(
         json['status'] as String,
         json['matchday'] as int,
-        Team.fromJson(json['homeTeam']),
-        Team.fromJson(json['awayTeam']),
+        Team.fromJsonMatches(json['homeTeam']),
+        Team.fromJsonMatches(json['awayTeam']),
         Score.fromJson(json['score'])
     );
   }
 
   @override
   String toString() {
-    return "{$status} {$matchday} " + homeTeam.toString() + " " + awayTeam.toString() + " " + score.toString();
+    return '{$status} {$matchday} ' + homeTeam.toString() + awayTeam.toString() + score.toString();
   }
 }
