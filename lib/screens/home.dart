@@ -29,6 +29,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepOrange,
         title: const Center(
           child: Text('Serie A Scores')
         ),
@@ -51,6 +52,9 @@ class _HomeState extends State<Home> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        backgroundColor: Colors.deepOrange,
+        selectedItemColor: Colors.yellow,
+        unselectedItemColor: Colors.white,
       ),
     );
   }
