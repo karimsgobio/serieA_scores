@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serie_a_scores/models/team.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -39,8 +40,39 @@ class _StandingsState extends State<Standings> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: (teams == null) ? Container() : Text(teams![0].toString()),
+    return (teams == null) ? Container() : 
+    RefreshIndicator(
+      onRefresh: () => fetchData(),
+      child:SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: DataTable(
+          columnSpacing: 30,
+          columns: const [
+            DataColumn(
+              label: Text('Position'),
+            ),
+            DataColumn(
+              label: Text('Name'),
+            ),
+            DataColumn(
+              label: Text('Points'),
+            ),
+          ],
+          rows: teams!.map((team) =>
+            DataRow(
+              cells: [
+                DataCell(Center(child: Text(team.position.toString()))),
+                DataCell(Row(children: [
+                  SvgPicture.network('https://crests.football-data.org/' + team.id.toString() + '.svg',width: 30,),
+                  Text(' ' + team.name)],
+                  )
+                ),
+                DataCell(Center(child: Text(team.points.toString()))),
+              ]
+            )
+          ).toList()
+        )
+      )
     );
   }
 }
