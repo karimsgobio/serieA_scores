@@ -15,45 +15,43 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SettingsList(
-        sections: [
-          SettingsSection(
-            title: const Text('View'),
-            tiles: <SettingsTile>[
-              SettingsTile.switchTile(
-                onToggle: (value) {},
-                initialValue: true,
-                leading: const Icon(Icons.dark_mode),
-                title: const Text('Dark mode'),
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: const Text('About'),
-            tiles: <SettingsTile>[
-              SettingsTile(
-                leading: const Icon(Icons.person_outline),
-                title: const Text('Author'),
-                value: Text(_authorUrl.toString()),
-                onPressed: (context) => _launchUrl(_authorUrl),
-              ),
-              SettingsTile(
-                leading: const Icon(Icons.code),
-                title: const Text('Source code'),
-                value: Text(_sourceCodeUrl.toString()),
-                onPressed: (context) =>  _launchUrl(_sourceCodeUrl),
-              ),
-              SettingsTile(
-                leading: const Icon(Icons.attribution),
-                title: const Text('Credits'),
-                value: const Text('Football data provided by the Football-Data.org API'),
-                onPressed: (context) =>  _launchUrl(_creditsUrl),
-              ),
-            ],
-          )
-        ],
-      ),
+    return SettingsList(
+      sections: [
+        SettingsSection(
+          title: const Text('View'),
+          tiles: <SettingsTile>[
+            SettingsTile.switchTile(
+              onToggle: (value) {},
+              initialValue: true,
+              leading: const Icon(Icons.dark_mode),
+              title: const Text('Dark mode'),
+            ),
+          ],
+        ),
+        SettingsSection(
+          title: const Text('About'),
+          tiles: <SettingsTile>[
+            SettingsTile(
+              leading: const Icon(Icons.person_outline),
+              title: const Text('Author'),
+              value: Text(_authorUrl.toString()),
+              onPressed: (context) => _launchUrl(_authorUrl),
+            ),
+            SettingsTile(
+              leading: const Icon(Icons.code),
+              title: const Text('Source code'),
+              value: Text(_sourceCodeUrl.toString()),
+              onPressed: (context) =>  _launchUrl(_sourceCodeUrl),
+            ),
+            SettingsTile(
+              leading: const Icon(Icons.attribution),
+              title: const Text('Credits'),
+              value: const Text('Football data provided by the Football-Data.org API'),
+              onPressed: (context) =>  _launchUrl(_creditsUrl),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
