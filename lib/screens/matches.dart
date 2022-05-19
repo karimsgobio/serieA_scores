@@ -20,7 +20,7 @@ class _MatchesState extends State<Matches> {
     http.Response responseMatches;
     
     responseMatches = await http.get(
-        Uri.parse('http://api.football-data.org/v2/competitions/SA/matches?matchday=36'),
+        Uri.parse('http://api.football-data.org/v2/competitions/SA/matches?matchday=35'),
         headers: {
           'X-Auth-Token': dotenv.env['API_KEY'] ?? ''
         });
@@ -41,9 +41,59 @@ class _MatchesState extends State<Matches> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: (matches == null) ? Container() : Text(matches![0].toString()),
-      //child: (matches == null) ? Container() : SvgPicture.network('https://crests.football-data.org/' + matches![0].idHomeTeam.toString() + '.svg'),
-    );
+    return (matches == null) ? Container() :
+      RefreshIndicator(
+        onRefresh: () => fetchData(),
+        child: Column(
+          children: [
+            //Text('Matchday: ${matches![0].matchday.toString()}', textAlign: TextAlign.center,),
+            Expanded(
+              child: ListView.builder(
+                itemCount: matches!.length,
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    height: 110,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.network('https://crests.football-data.org/' + matches![index].homeTeam.id.toString() + '.svg',width: 30,),
+                                Text(matches![index].homeTeam.name, textAlign: TextAlign.center,),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(matches![index].score.fullTime.homeTeam.toString() + " : " + matches![index].score.fullTime.awayTeam.toString(), textAlign: TextAlign.center,),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.network('https://crests.football-data.org/' + matches![index].awayTeam.id.toString() + '.svg',width: 30,),
+                                Text(matches![index].awayTeam.name, textAlign: TextAlign.center,),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    )
+                  );
+                },
+              )
+            )
+          ]
+        )
+      );
   }
 }
