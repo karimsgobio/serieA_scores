@@ -46,16 +46,16 @@ class _StandingsState extends State<Standings> {
       child:SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: DataTable(
-          columnSpacing: 30,
+          columnSpacing: 25,
           columns: const [
             DataColumn(
-              label: Text('Position'),
+              label: Expanded(child: Text('Position',textAlign: TextAlign.center,)),
             ),
             DataColumn(
-              label: Text('Name'),
+              label: Expanded(child: Text('Name',textAlign: TextAlign.center,)),
             ),
             DataColumn(
-              label: Text('Points'),
+              label: Expanded(child: Text('Points',textAlign: TextAlign.center,)),
             ),
           ],
           rows: teams!.map((team) =>
@@ -64,8 +64,8 @@ class _StandingsState extends State<Standings> {
                 DataCell(Center(child: Text(team.position.toString()))),
                 DataCell(Row(children: [
                   SvgPicture.network('https://crests.football-data.org/' + team.id.toString() + '.svg',width: 30,),
-                  Text(' ' + team.name)],
-                  )
+                  Flexible(child: Text(team.name)),
+                  ])
                 ),
                 DataCell(Center(child: Text(team.points.toString()))),
               ]
