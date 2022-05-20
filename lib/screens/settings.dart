@@ -18,17 +18,6 @@ class Settings extends StatelessWidget {
     return SettingsList(
       sections: [
         SettingsSection(
-          title: const Text('View'),
-          tiles: <SettingsTile>[
-            SettingsTile.switchTile(
-              onToggle: (value) {},
-              initialValue: true,
-              leading: const Icon(Icons.dark_mode),
-              title: const Text('Dark mode'),
-            ),
-          ],
-        ),
-        SettingsSection(
           title: const Text('About'),
           tiles: <SettingsTile>[
             SettingsTile(

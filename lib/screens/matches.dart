@@ -55,61 +55,55 @@ class _MatchesState extends State<Matches> {
     return (matches == null) ? Container() :
       RefreshIndicator(
         onRefresh: () => fetchData(),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: matches!.length,
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    height: 115,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ListView.builder(
+          itemCount: matches!.length,
+          itemBuilder: (context, index) {
+            return SizedBox(
+              height: 115,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: Colors.grey.withOpacity(0.2),
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.network('https://crests.football-data.org/' + matches![index].homeTeam.id.toString() + '.svg',width: 30,),
-                                Text(matches![index].homeTeam.name, textAlign: TextAlign.center,),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(matches![index].getDateItFormat(), style: const TextStyle(fontSize: 11),),
-                                Text((matches![index].score.fullTime.homeTeam ?? '-').toString() + " : " + (matches![index].score.fullTime.awayTeam ?? '-').toString(), textAlign: TextAlign.center,),
-                                Text(matches![index].status, style: const TextStyle(fontSize: 11),),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.network('https://crests.football-data.org/' + matches![index].awayTeam.id.toString() + '.svg',width: 30,),
-                                Text(matches![index].awayTeam.name, textAlign: TextAlign.center,),
-                              ],
-                            ),
-                          ),
+                          SvgPicture.network('https://crests.football-data.org/' + matches![index].homeTeam.id.toString() + '.svg',width: 30,),
+                          Text(matches![index].homeTeam.name, textAlign: TextAlign.center,),
                         ],
-                      )
-                    )
-                  );
-                },
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(matches![index].getDateItFormat(), style: const TextStyle(fontSize: 11),),
+                          Text((matches![index].score.fullTime.homeTeam ?? '-').toString() + " : " + (matches![index].score.fullTime.awayTeam ?? '-').toString(), textAlign: TextAlign.center,),
+                          Text(matches![index].status, style: const TextStyle(fontSize: 11),),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.network('https://crests.football-data.org/' + matches![index].awayTeam.id.toString() + '.svg',width: 30,),
+                          Text(matches![index].awayTeam.name, textAlign: TextAlign.center,),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               )
-            )
-          ]
+            );
+          },
         )
       );
   }
