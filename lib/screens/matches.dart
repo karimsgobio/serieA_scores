@@ -14,13 +14,24 @@ class Matches extends StatefulWidget {
 }
 
 class _MatchesState extends State<Matches> {
+  int? matchday;
   List<Match>? matches;
 
   Future fetchData() async {
+    http.Response responseMatchday;
     http.Response responseMatches;
     
+    responseMatchday = await http.get(
+    Uri.parse('http://api.football-data.org/v2/competitions/SA'),
+    headers: {
+        'X-Auth-Token': dotenv.env['API_KEY'] ?? ''
+    });
+    if (responseMatchday.statusCode == 200) {
+        matchday = jsonDecode(responseMatchday.body)['currentSeason']['currentMatchday'] as int;
+    }
+
     responseMatches = await http.get(
-        Uri.parse('http://api.football-data.org/v2/competitions/SA/matches?matchday=35'),
+        Uri.parse('http://api.football-data.org/v2/competitions/SA/matches?matchday=${matchday.toString()}'),
         headers: {
           'X-Auth-Token': dotenv.env['API_KEY'] ?? ''
         });
@@ -46,13 +57,12 @@ class _MatchesState extends State<Matches> {
         onRefresh: () => fetchData(),
         child: Column(
           children: [
-            //Text('Matchday: ${matches![0].matchday.toString()}', textAlign: TextAlign.center,),
             Expanded(
               child: ListView.builder(
                 itemCount: matches!.length,
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    height: 110,
+                    height: 115,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -74,7 +84,14 @@ class _MatchesState extends State<Matches> {
                             ),
                           ),
                           Expanded(
-                            child: Text(matches![index].score.fullTime.homeTeam.toString() + " : " + matches![index].score.fullTime.awayTeam.toString(), textAlign: TextAlign.center,),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(matches![index].getDateItFormat(), style: const TextStyle(fontSize: 11),),
+                                Text((matches![index].score.fullTime.homeTeam ?? '-').toString() + " : " + (matches![index].score.fullTime.awayTeam ?? '-').toString(), textAlign: TextAlign.center,),
+                                Text(matches![index].status, style: const TextStyle(fontSize: 11),),
+                              ],
+                            ),
                           ),
                           Expanded(
                             child: Column(
