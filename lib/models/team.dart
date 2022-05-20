@@ -16,8 +16,8 @@ class Team {
     return Team(
         json['team']['id'] as int,
         json['team']['name'] as String,
-        json['position'] as int,
-        json['points'] as int
+        json['position'],
+        json['points']
     ); // Team
   }
 

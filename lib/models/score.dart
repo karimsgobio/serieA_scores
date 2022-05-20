@@ -1,7 +1,7 @@
 import 'package:serie_a_scores/models/result.dart';
 
 class Score {
-  final String winner;
+  final String? winner;
   final String duration;
   final Result fullTime;
 

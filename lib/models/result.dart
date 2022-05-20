@@ -1,12 +1,13 @@
 class Result {
-  final int homeTeam;
-  final int awayTeam;
+  final int? homeTeam;
+  final int? awayTeam;
 
   Result(this.homeTeam, this.awayTeam);
 
   factory Result.fromJson(dynamic json) {
     return Result(
-        json['homeTeam'] as int, json['awayTeam'] as int
+        json['homeTeam'],
+        json['awayTeam']
     ); // Result
   }
 
