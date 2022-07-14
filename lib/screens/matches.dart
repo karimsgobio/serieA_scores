@@ -22,7 +22,7 @@ class _MatchesState extends State<Matches> {
     http.Response responseMatches;
     
     responseMatchday = await http.get(
-    Uri.parse('http://api.football-data.org/v2/competitions/SA'),
+    Uri.parse('http://api.football-data.org/v4/competitions/SA'),
     headers: {
         'X-Auth-Token': dotenv.env['API_KEY'] ?? ''
     });
@@ -31,7 +31,7 @@ class _MatchesState extends State<Matches> {
     }
 
     responseMatches = await http.get(
-        Uri.parse('http://api.football-data.org/v2/competitions/SA/matches?matchday=${matchday.toString()}'),
+        Uri.parse('http://api.football-data.org/v4/competitions/SA/matches?matchday=${matchday.toString()}'),
         headers: {
           'X-Auth-Token': dotenv.env['API_KEY'] ?? ''
         });
@@ -58,53 +58,63 @@ class _MatchesState extends State<Matches> {
         child: ListView.builder(
           itemCount: matches!.length,
           itemBuilder: (context, index) {
-            return SizedBox(
-              height: 115,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(
-                    color: Colors.grey.withOpacity(0.2),
-                    width: 2,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.network('https://crests.football-data.org/' + matches![index].homeTeam.id.toString() + '.svg',width: 30,),
-                          Text(matches![index].homeTeam.name, textAlign: TextAlign.center,),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(matches![index].getDateItFormat(), style: const TextStyle(fontSize: 11),),
-                          Text((matches![index].score.fullTime.homeTeam ?? '-').toString() + " : " + (matches![index].score.fullTime.awayTeam ?? '-').toString(), textAlign: TextAlign.center,),
-                          Text(matches![index].status, style: const TextStyle(fontSize: 11),),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.network('https://crests.football-data.org/' + matches![index].awayTeam.id.toString() + '.svg',width: 30,),
-                          Text(matches![index].awayTeam.name, textAlign: TextAlign.center,),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              )
-            );
+            return _buildItem(context, matches![index]);
           },
         )
       );
+  }
+
+  Widget _buildItem(BuildContext context, Match match){
+    return SizedBox(
+      height: 115,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: Colors.grey.withOpacity(0.2),
+            width: 2,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  (match.homeTeam.crestUrl.contains('svg')) ?
+                    SvgPicture.network(match.homeTeam.crestUrl,width: 30,)
+                    :
+                    Image.network(match.homeTeam.crestUrl,width: 30,),
+                  Text(match.homeTeam.name, textAlign: TextAlign.center,),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(match.getDateItFormat(), style: const TextStyle(fontSize: 11),),
+                  Text((match.score.fullTime.homeTeam ?? '-').toString() + " : " + (match.score.fullTime.awayTeam ?? '-').toString(), textAlign: TextAlign.center,),
+                  Text(match.status, style: const TextStyle(fontSize: 11),),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  (match.awayTeam.crestUrl.contains('svg')) ?
+                    SvgPicture.network(match.awayTeam.crestUrl,width: 30,)
+                    :
+                    Image.network(match.awayTeam.crestUrl,width: 30,),
+                  Text(match.awayTeam.name, textAlign: TextAlign.center,),
+                ],
+              ),
+            ),
+          ],
+        )
+      )
+    );
   }
 }

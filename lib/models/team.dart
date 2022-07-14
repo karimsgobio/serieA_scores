@@ -1,21 +1,24 @@
 class Team {
   final int id;
   final String name;
+  final String crestUrl;
   int? position;
   int? points;
 
-  Team(this.id, this.name, [this.position, this.points]);
+  Team(this.id, this.name, this.crestUrl, [this.position, this.points]);
 
   factory Team.fromJsonMatches(dynamic json) {
     return Team(
         json['id'] as int,
-        json['name'] as String,
+        json['shortName'] as String,
+        json['crest'] as String,
     ); // Team
   }
   factory Team.fromJsonTeams(dynamic json) {
     return Team(
         json['team']['id'] as int,
-        json['team']['name'] as String,
+        json['team']['shortName'] as String,
+        json['team']['crest'] as String,
         json['position'],
         json['points']
     ); // Team
@@ -23,6 +26,6 @@ class Team {
 
   @override
   String toString() {
-    return "{$id} {$name} {$position} {$points}";
+    return "{$id} {$name} {$crestUrl} {$position} {$points}";
   }
 }

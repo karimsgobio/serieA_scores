@@ -6,8 +6,8 @@ class Result {
 
   factory Result.fromJson(dynamic json) {
     return Result(
-        json['homeTeam'],
-        json['awayTeam']
+        json['home'],
+        json['away']
     ); // Result
   }
 

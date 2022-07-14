@@ -1,3 +1,4 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serie_a_scores/models/team.dart';
@@ -19,7 +20,7 @@ class _StandingsState extends State<Standings> {
     http.Response responseTeams;
 
     responseTeams = await http.get(
-        Uri.parse('http://api.football-data.org/v2/competitions/SA/standings'),
+        Uri.parse('http://api.football-data.org/v4/competitions/SA/standings'),
         headers: {
           'X-Auth-Token': dotenv.env['API_KEY'] ?? ''
         });
@@ -41,38 +42,46 @@ class _StandingsState extends State<Standings> {
   @override
   Widget build(BuildContext context) {
     return (teams == null) ? Container() : 
-    RefreshIndicator(
-      onRefresh: () => fetchData(),
-      child:SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: DataTable(
-          columnSpacing: 25,
+      RefreshIndicator(
+        onRefresh: () => fetchData(),
+        child: DataTable2(
           columns: const [
-            DataColumn(
-              label: Expanded(child: Text('Position',textAlign: TextAlign.center,)),
+            DataColumn2(
+              label: Center(child: Text('Position',textAlign: TextAlign.center,)),
+              size: ColumnSize.S,
+              numeric: true,
             ),
-            DataColumn(
-              label: Expanded(child: Text('Name',textAlign: TextAlign.center,)),
+            DataColumn2(
+              label: Center(child: Text('Name',textAlign: TextAlign.center,)),
+              size: ColumnSize.L,
             ),
-            DataColumn(
-              label: Expanded(child: Text('Points',textAlign: TextAlign.center,)),
+            DataColumn2(
+              label: Center(child: Text('Points',textAlign: TextAlign.center,)),
+              size: ColumnSize.S,
+              numeric: true,
             ),
           ],
           rows: teams!.map((team) =>
             DataRow(
               cells: [
                 DataCell(Center(child: Text(team.position.toString()))),
-                DataCell(Row(children: [
-                  SvgPicture.network('https://crests.football-data.org/' + team.id.toString() + '.svg',width: 30,),
-                  Flexible(child: Text(team.name)),
-                  ])
+                DataCell(
+                  Row(
+                    children: [
+                      (team.crestUrl.contains('svg')) ?
+                        SvgPicture.network(team.crestUrl,width: 30,)
+                        :
+                        Image.network(team.crestUrl,width: 30,),
+                      const Text(" "),
+                      Flexible(child: Text(team.name)),
+                    ]
+                  ),
                 ),
                 DataCell(Center(child: Text(team.points.toString()))),
               ]
             )
           ).toList()
         )
-      )
-    );
+      );
   }
 }
