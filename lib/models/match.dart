@@ -29,8 +29,8 @@ class Match {
   }
 
   String getDateItFormat(){
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final dateF = DateTime.parse(date.substring(0,10));
-    return formatter.format(dateF);
+    final DateFormat formatter = DateFormat('dd-MM-yyyy | HH:mm');
+    final dateF = DateTime.parse(date);
+    return formatter.format(dateF.toLocal());
   }
 }
