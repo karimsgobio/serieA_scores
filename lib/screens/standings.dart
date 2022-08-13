@@ -45,18 +45,19 @@ class _StandingsState extends State<Standings> {
       RefreshIndicator(
         onRefresh: () => fetchData(),
         child: DataTable2(
+          smRatio: 0.35,
           columns: const [
             DataColumn2(
-              label: Center(child: Text('Position',textAlign: TextAlign.center,)),
+              label: Center(child: Text('#',textAlign: TextAlign.center,)),
               size: ColumnSize.S,
               numeric: true,
             ),
             DataColumn2(
-              label: Center(child: Text('Name',textAlign: TextAlign.center,)),
+              label: Center(child: Text('Team',textAlign: TextAlign.center,)),
               size: ColumnSize.L,
             ),
             DataColumn2(
-              label: Center(child: Text('Points',textAlign: TextAlign.center,)),
+              label: Center(child: Text('P',textAlign: TextAlign.center,)),
               size: ColumnSize.S,
               numeric: true,
             ),
