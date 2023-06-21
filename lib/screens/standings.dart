@@ -1,4 +1,3 @@
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serie_a_scores/models/team.dart';
@@ -44,45 +43,67 @@ class _StandingsState extends State<Standings> {
     return (teams == null) ? Container() : 
       RefreshIndicator(
         onRefresh: () => fetchData(),
-        child: DataTable2(
-          smRatio: 0.35,
-          columns: const [
-            DataColumn2(
-              label: Center(child: Text('#',textAlign: TextAlign.center,)),
-              size: ColumnSize.S,
-              numeric: true,
-            ),
-            DataColumn2(
-              label: Center(child: Text('Team',textAlign: TextAlign.center,)),
-              size: ColumnSize.L,
-            ),
-            DataColumn2(
-              label: Center(child: Text('P',textAlign: TextAlign.center,)),
-              size: ColumnSize.S,
-              numeric: true,
-            ),
-          ],
-          rows: teams!.map((team) =>
-            DataRow(
-              cells: [
-                DataCell(Center(child: Text(team.position.toString()))),
-                DataCell(
-                  Row(
-                    children: [
-                      (team.crestUrl.contains('svg')) ?
-                        SvgPicture.network(team.crestUrl,width: 30,)
-                        :
-                        Image.network(team.crestUrl,width: 30,),
-                      const Text(" "),
-                      Flexible(child: Text(team.name)),
-                    ]
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Scrollbar(
+            scrollbarOrientation: ScrollbarOrientation.top,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columnSpacing: 25,
+                columns: const [
+                  DataColumn(
+                    label: Text('#'),
+                    numeric: true,
                   ),
-                ),
-                DataCell(Center(child: Text(team.points.toString()))),
-              ]
-            )
-          ).toList()
-        )
+                  DataColumn(
+                    label: Text('Team'),
+                  ),
+                  DataColumn(
+                    label: Text('Pts'),
+                    numeric: true,
+                  ),
+                  DataColumn(
+                    label: Text('W'),
+                    numeric: true,
+                  ),
+                  DataColumn(
+                    label: Text('D'),
+                    numeric: true,
+                  ),
+                  DataColumn(
+                    label: Text('L'),
+                    numeric: true,
+                  ),
+                ],
+                rows: teams!.map((team) =>
+                  DataRow(
+                    cells: [
+                      DataCell(Text(team.position.toString())),
+                      DataCell(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            (team.crestUrl.contains('svg')) ?
+                              SvgPicture.network(team.crestUrl,width: 30,)
+                              :
+                              Image.network(team.crestUrl,width: 30,),
+                            const Text(" "),
+                            Flexible(child: Text(team.name,)),
+                          ]
+                        ),
+                      ),
+                      DataCell(Text(team.points.toString())),
+                      DataCell(Text(team.won.toString())),
+                      DataCell(Text(team.draw.toString())),
+                      DataCell(Text(team.lost.toString())),
+                    ]
+                  )
+                ).toList()
+              ),
+            ),
+          ),
+        ),
       );
   }
 }
